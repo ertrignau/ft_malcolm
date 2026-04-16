@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:05:11 by eric              #+#    #+#             */
-/*   Updated: 2026/04/16 11:22:13 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/16 14:01:27 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 #include <signal.h>
 #include <time.h>
 
-#include "libft/libft.h"
+#include "libft.h"
 
 #define ARP_REQUEST 1
 #define ARP_REPLY	2
@@ -59,17 +59,26 @@ typedef struct s_arp
 	uint8_t			target_ip[4];	// -> ip vise
 } __attribute__((packed)) t_arp;
 
-/*Sert a memoriser les associations IP->MAC en liste chainee pour stocker plusieurs machines*/
-typedef struct s_entry
-{
-	uint8_t			ip[4];
-	uint8_t			mac[6];
-	struct s_entry	*next;
-} t_entry;
-
+// /*Sert a memoriser les associations IP->MAC en liste chainee pour stocker plusieurs machines*/
+// typedef struct s_entry
+// {
+// 	uint8_t			ip[4];
+// 	uint8_t			mac[6];
+// 	struct s_entry	*next;
+// } t_entry;
 
 /*INIT*/
-t_entry *add_entry(t_entry **table, uint8_t *ip, uint8_t *mac);
+// t_entry *add_entry(t_entry **table, uint8_t *ip, uint8_t *mac);
 
+/*SOCKET*/
+int		create_socket(void);
+char	*get_interface_info();
+
+/*UTILS*/
+// void	free_entry(t_entry *entry);
+void	print_mac(uint8_t mac[6]);
+void	print_ip(uint8_t ip[4]);
+void	print_arp(t_arp *arp);
+int		hex_char_to_val(char c);
 
 #endif

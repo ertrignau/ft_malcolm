@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/16 11:15:05 by eric              #+#    #+#             */
-/*   Updated: 2026/04/16 14:03:45 by eric             ###   ########.fr       */
+/*   Created: 2026/04/16 13:48:28 by eric              #+#    #+#             */
+/*   Updated: 2026/04/16 13:48:31 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-#define LIBFT_H
+#include "libft.h"
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+char	*ft_strdup(const char *src)
+{
+	char	*dest;
+	size_t	i;
 
-int		ft_atoi(const char *str);
-int		ft_strcmp(const char *s1, const char *s2);
-char	*ft_strdup(const char *src);
-int		ft_strlen(const char *str);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-
-#endif
+	dest = malloc(sizeof(char) * (ft_strlen(src) + 1));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
