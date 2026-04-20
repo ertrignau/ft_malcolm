@@ -66,7 +66,7 @@ RESET			:= \033[0m
 # RULES
 # ==============================================================================
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re up down
 
 all: $(NAME)
 
@@ -97,6 +97,20 @@ fclean: clean
 	@echo "$(GREEN)✓ All binaries removed!$(RESET)"
 
 re: fclean all
+
+# ==============================================================================
+# DOCKER
+# ==============================================================================
+
+up:
+	@echo "$(BLUE)Starting Docker containers...$(RESET)"
+	@cd malcolm_lab && sudo docker compose up --build
+	@echo "$(GREEN)✓ Containers are running!$(RESET)"
+
+down:
+	@echo "$(RED)Stopping Docker containers...$(RESET)"
+	@cd malcolm_lab && sudo docker compose down
+	@echo "$(GREEN)✓ Containers stopped!$(RESET)"
 
 # ==============================================================================
 # INFO
