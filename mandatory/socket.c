@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 13:53:11 by eric              #+#    #+#             */
-/*   Updated: 2026/04/17 15:36:27 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/20 13:13:53 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,32 +25,30 @@ int	create_socket(void)
 	return (sockfd);
 }
 
-char	*get_interface_info()
+char *get_interface_info(void)
 {
-	struct ifaddrs	*ifaddr;
-	struct ifaddrs	*tmp;
-	char			*iface;
+    struct ifaddrs *ifaddr, *tmp;
+    char *iface = NULL;
 
-	iface = NULL;
-	if (getifaddrs(&ifaddr) == -1)
-		return (NULL);
-	tmp = ifaddr;
-	while (tmp)
-	{
-		if (tmp->ifa_addr && tmp->ifa_addr->sa_family == AF_PACKET)
-		{
-			if (ft_strcmp(tmp->ifa_name, "lo") != 0)
-			{
-				iface = ft_strdup(tmp->ifa_name);
-				if (!iface)
-					return (NULL);
-				break;
-			}
-		}
-		tmp = tmp->ifa_next;
-	}
-	freeifaddrs(ifaddr);
-	return (iface);
+    if (getifaddrs(&ifaddr) == -1)
+        return NULL;
+
+    tmp = ifaddr;
+    while (tmp)
+    {
+        if (tmp->ifa_addr &&
+            tmp->ifa_addr->sa_family == AF_PACKET &&
+            (tmp->ifa_flags & IFF_UP) &&
+            (tmp->ifa_flags & IFF_RUNNING) &&
+            ft_strcmp(tmp->ifa_name, "lo") != 0)
+        {
+            iface = ft_strdup(tmp->ifa_name);
+            break;
+        }
+        tmp = tmp->ifa_next;
+    }
+    freeifaddrs(ifaddr);
+    return iface;
 }
 
 int	get_local_mac(const char *iface, uint8_t mac[6])

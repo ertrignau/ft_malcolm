@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 13:53:34 by eric              #+#    #+#             */
-/*   Updated: 2026/04/17 16:27:01 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/20 13:52:32 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,16 @@ int parse_mac(const char *s, uint8_t mac[6])
 	return (0);
 }
 
-int	parse_args(int ac, char *av[], t_arp *arp)
+int	parse_args(int ac, char *av[], t_config *conf)
 {
 	if (ac < 5)
 	{
 		fprintf (stderr, "Wrong number of arguments\n");
-		fprintf (stderr, "Usage: ./ft_malcom [ip] [mac adress] [target ip] [target mac adress]");
+		fprintf (stderr, "Usage: ./ft_malcom [ip] [mac adress] [target ip] [target mac adress]\n");
 		return (1);
 	}
 
-		if (parse_ip(av[1], arp->sender_ip) < 0 || parse_mac(av[2], arp->sender_mac) < 0 || parse_ip(av[3], arp->target_ip) < 0 || parse_mac(av[4], arp->target_mac) < 0)
+		if (parse_ip(av[1], conf->spoof_ip) < 0 || parse_mac(av[2], conf->spoof_mac) < 0 || parse_ip(av[3], conf->target_ip) < 0 || parse_mac(av[4], conf->target_mac) < 0)
 	{
 		fprintf(stderr, "Invalid IP/MAC format\n");
 		return (1);

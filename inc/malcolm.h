@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:05:11 by eric              #+#    #+#             */
-/*   Updated: 2026/04/17 17:01:57 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/20 13:53:34 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <signal.h>
 
 #include <sys/socket.h>
 #include <sys/ioctl.h>
@@ -78,6 +79,8 @@ typedef struct s_config
 /*INIT*/
 // t_entry *add_entry(t_entry **table, uint8_t *ip, uint8_t *mac);
 
+extern volatile sig_atomic_t g_signal;
+
 /*SOCKET*/
 int		create_socket(void);
 char	*get_interface_info();
@@ -86,11 +89,15 @@ int		get_local_mac(const char *iface, uint8_t mac[6]);
 /*PARSING*/
 int	parse_ip(const char *s, uint8_t ip[4]);
 int parse_mac(const char *s, uint8_t mac[6]);
-int	parse_args(int ac, char *av[], t_arp *arp);
+int	parse_args(int ac, char *av[], t_config *conf);
+
+/*SIGNAL*/
+void	signal_handler(int signal);
+int 	init_signals(void);
 
 /*SNIFFER*/
-int		send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_arp *spoofed_arp);
-void	sniff_arp(int sockfd, const char *iface, const t_arp *spoofed_arp);
+int		send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_config *conf);
+void	sniff_arp(int sockfd, const char *iface, const t_config *conf);
 
 /*UTILS*/
 // void	free_entry(t_entry *entry);

@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/15 13:53:38 by eric              #+#    #+#             */
-/*   Updated: 2026/04/20 12:41:23 by eric             ###   ########.fr       */
+/*   Created: 2026/04/20 11:04:51 by eric              #+#    #+#             */
+/*   Updated: 2026/04/20 11:30:54 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malcolm.h"
 
-// t_entry *add_entry(t_entry **table, uint8_t *ip, uint8_t *mac)
-// {
-// 	t_entry *new;
+int	init_signals(void)
+{
+	struct sigaction sa;
 
-// 	new = malloc(sizeof(t_entry));
-// 	if (!new)
-// 		return (NULL);
-// 	ft_memcpy(new->ip, ip, 4);
-// 	ft_memcpy(new->mac, mac, 6);
-// 	new->next = *table;
-// 	*table = new;
-// 	return (new);
-// }
+	sa.sa_handler = signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		printf("Error in SIGINT");
+		return (-1);	
+	}
+	return (0);
+}

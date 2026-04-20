@@ -42,6 +42,7 @@ MANDATORY_SRCS	:= $(MANDATORY_DIR)/main.c \
 				   $(MANDATORY_DIR)/parsing.c \
 				   $(MANDATORY_DIR)/socket.c \
 				   $(MANDATORY_DIR)/sniffer.c \
+				   $(MANDATORY_DIR)/signal.c \
 				   $(MANDATORY_DIR)/utils.c
 
 ALL_SRCS		:= $(LIBFT_SRCS) $(MANDATORY_SRCS)

