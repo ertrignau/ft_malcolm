@@ -34,12 +34,14 @@ LIBFT_SRCS		:=  $(LIBFT_DIR)/ft_atoi.c \
 					$(LIBFT_DIR)/ft_strcmp.c \
 					$(LIBFT_DIR)/ft_strdup.c \
 					$(LIBFT_DIR)/ft_strlen.c \
+					$(LIBFT_DIR)/ft_memset.c \
 					$(LIBFT_DIR)/ft_memcpy.c
 
 MANDATORY_SRCS	:= $(MANDATORY_DIR)/main.c \
 				   $(MANDATORY_DIR)/init.c \
 				   $(MANDATORY_DIR)/parsing.c \
 				   $(MANDATORY_DIR)/socket.c \
+				   $(MANDATORY_DIR)/sniffer.c \
 				   $(MANDATORY_DIR)/utils.c
 
 ALL_SRCS		:= $(LIBFT_SRCS) $(MANDATORY_SRCS)
@@ -69,7 +71,7 @@ all: $(NAME)
 
 $(NAME): $(ALL_OBJS) $(LIBFT_A)
 	@echo "$(BLUE)Linking $@...$(RESET)"
-	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(MANDATORY_OBJS) $(LIBFT_A) -lm
+	@$(CC) $(CFLAGS) $(INCLU DES) -o $@ $(MANDATORY_OBJS) $(LIBFT_A) -lm
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(RESET)"
 
 $(LIBFT_A): $(LIBFT_OBJS)
@@ -89,8 +91,8 @@ clean:
 
 fclean: clean
 	@echo "$(RED)Removing binaries...$(RESET)"
-	@rm -rf $(BIN_DIR)
 	@rm -f $(NAME)
+	@rm -f $(LIBFT_A)
 	@echo "$(GREEN)✓ All binaries removed!$(RESET)"
 
 re: fclean all

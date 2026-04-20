@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:05:11 by eric              #+#    #+#             */
-/*   Updated: 2026/04/16 14:01:27 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/17 17:01:57 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_ethernet
 	uint16_t		type;			// -> 2 bytes, 0x0800 = IPv4, 0x0806 = ARP, 0x86DD = IPv6
 } __attribute__((packed)) t_ethernet;
 
-/*Structure ARP pour le contenu du paquet Address Rsolution Protocol*/
+/*Structure ARP pour le contenu du paquet Address Resolution Protocol*/
 typedef struct s_arp
 {
 	uint16_t		htype;			// -> type de reseau		(Ethernet)
@@ -58,6 +58,14 @@ typedef struct s_arp
 	uint8_t			target_mac[6];	// -> mac vise
 	uint8_t			target_ip[4];	// -> ip vise
 } __attribute__((packed)) t_arp;
+
+typedef struct s_config
+{
+    uint8_t spoof_ip[4];
+    uint8_t spoof_mac[6];
+    uint8_t target_ip[4];
+    uint8_t target_mac[6];
+} t_config;
 
 // /*Sert a memoriser les associations IP->MAC en liste chainee pour stocker plusieurs machines*/
 // typedef struct s_entry
@@ -73,11 +81,21 @@ typedef struct s_arp
 /*SOCKET*/
 int		create_socket(void);
 char	*get_interface_info();
+int		get_local_mac(const char *iface, uint8_t mac[6]);
+
+/*PARSING*/
+int	parse_ip(const char *s, uint8_t ip[4]);
+int parse_mac(const char *s, uint8_t mac[6]);
+int	parse_args(int ac, char *av[], t_arp *arp);
+
+/*SNIFFER*/
+int		send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_arp *spoofed_arp);
+void	sniff_arp(int sockfd, const char *iface, const t_arp *spoofed_arp);
 
 /*UTILS*/
 // void	free_entry(t_entry *entry);
-void	print_mac(uint8_t mac[6]);
-void	print_ip(uint8_t ip[4]);
+void	print_mac(const uint8_t mac[6]);
+void	print_ip(const uint8_t ip[4]);
 void	print_arp(t_arp *arp);
 int		hex_char_to_val(char c);
 
