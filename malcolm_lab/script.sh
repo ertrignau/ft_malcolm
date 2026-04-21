@@ -28,11 +28,6 @@ sleep 2
 echo "[5] Victim pings gateway..."
 sudo docker exec victim ping -c 1 $GATEWAY_IP
 
-sleep 1
-
-echo "[6] Check ARP table..."
-sudo docker exec victim ip neigh
-
 echo ""
 echo "[✓] Test complete! Attacker PID: $ATTACKER_PID"
 echo "To stop: kill $ATTACKER_PID && sudo docker compose down"
