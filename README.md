@@ -68,6 +68,7 @@ Le tout orchestré via docker-compose.
 │   └── malcolm.h
 ├── libft
 │   ├── ft_atoi.c
+|	├── ft_memcmp.c
 │   ├── ft_memcpy.c
 │   ├── ft_memset.c
 │   ├── ft_strcmp.c
@@ -85,7 +86,6 @@ Le tout orchestré via docker-compose.
 │   └── victim
 │       └── Dockerfile
 ├── mandatory
-│   ├── init.c
 │   ├── main.c
 │   ├── parsing.c
 │   ├── signal.c
