@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 13:53:15 by eric              #+#    #+#             */
-/*   Updated: 2026/04/20 14:05:11 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/22 12:02:41 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ void	sniff_arp(int sockfd, const char *iface, const t_config *conf)
 			continue;
 		t_arp *arp = (t_arp *)(buffer + sizeof(t_ethernet));
 		if (ntohs(arp->opcode) == ARP_REQUEST 
-		&& memcmp(arp->target_ip, conf->spoof_ip, 4) == 0 
-		&& memcmp(arp->sender_ip, conf->target_ip, 4) == 0)
+		&& ft_memcmp(arp->target_ip, conf->spoof_ip, 4) == 0 
+		&& ft_memcmp(arp->sender_ip, conf->target_ip, 4) == 0)
 		{
-			printf("[DEBUG] ARP request seen → forcing reply\n");
     		send_arp_reply(sockfd, iface, arp, conf);
     		return;
 		}

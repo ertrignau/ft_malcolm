@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 13:53:36 by eric              #+#    #+#             */
-/*   Updated: 2026/04/20 13:54:28 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/22 12:03:55 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int main(int ac, char *av[])
 	// 3. Récupérer MAC locale
 	if (get_local_mac(iface, mac) == -1)
 	{
-		printf("Error: failed to get MAC address\n");
+		fprintf(stderr, "Error: failed to get MAC address\n");
 		free(iface);
 		return (1);
 	}
@@ -51,7 +51,7 @@ int main(int ac, char *av[])
 		mac[3], mac[4], mac[5]);
 	// 4. Créer socket RAW
 	sockfd = create_socket();
-	// 6. Sniff and respond to ARP requests
+	// 5. Sniff and respond to ARP requests
 	sniff_arp(sockfd, iface, &conf);
 	close(sockfd);
 	free(iface);

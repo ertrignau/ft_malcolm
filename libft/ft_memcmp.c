@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/15 13:53:38 by eric              #+#    #+#             */
-/*   Updated: 2026/04/20 12:41:23 by eric             ###   ########.fr       */
+/*   Created: 2026/04/22 11:40:11 by eric              #+#    #+#             */
+/*   Updated: 2026/04/22 11:50:11 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malcolm.h"
+#include "libft.h"
 
-// t_entry *add_entry(t_entry **table, uint8_t *ip, uint8_t *mac)
-// {
-// 	t_entry *new;
+int	ft_memcmp(const void *ptr, const	void *ptr2, size_t num)
+{
+	size_t			i;
+	unsigned char	*p1;
+	unsigned char	*p2;
 
-// 	new = malloc(sizeof(t_entry));
-// 	if (!new)
-// 		return (NULL);
-// 	ft_memcpy(new->ip, ip, 4);
-// 	ft_memcpy(new->mac, mac, 6);
-// 	new->next = *table;
-// 	*table = new;
-// 	return (new);
-// }
+	i = 0;
+	p1 = (unsigned char *)ptr;
+	p2 = (unsigned char *)ptr2;
+	while (i < num)
+	{
+		if (p1[i] < p2[i])
+			return (-1);
+		else if (p1[i] > p2[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}

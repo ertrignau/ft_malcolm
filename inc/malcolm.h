@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:05:11 by eric              #+#    #+#             */
-/*   Updated: 2026/04/20 13:53:34 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/22 11:39:04 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,6 @@ typedef struct s_config
     uint8_t target_ip[4];
     uint8_t target_mac[6];
 } t_config;
-
-// /*Sert a memoriser les associations IP->MAC en liste chainee pour stocker plusieurs machines*/
-// typedef struct s_entry
-// {
-// 	uint8_t			ip[4];
-// 	uint8_t			mac[6];
-// 	struct s_entry	*next;
-// } t_entry;
-
-/*INIT*/
-// t_entry *add_entry(t_entry **table, uint8_t *ip, uint8_t *mac);
 
 extern volatile sig_atomic_t g_signal;
 

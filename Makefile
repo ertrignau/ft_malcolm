@@ -35,10 +35,10 @@ LIBFT_SRCS		:=  $(LIBFT_DIR)/ft_atoi.c \
 					$(LIBFT_DIR)/ft_strdup.c \
 					$(LIBFT_DIR)/ft_strlen.c \
 					$(LIBFT_DIR)/ft_memset.c \
+					$(LIBFT_DIR)/ft_memcmp.c \
 					$(LIBFT_DIR)/ft_memcpy.c
 
 MANDATORY_SRCS	:= $(MANDATORY_DIR)/main.c \
-				   $(MANDATORY_DIR)/init.c \
 				   $(MANDATORY_DIR)/parsing.c \
 				   $(MANDATORY_DIR)/socket.c \
 				   $(MANDATORY_DIR)/sniffer.c \

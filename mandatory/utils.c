@@ -6,22 +6,11 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 13:53:08 by eric              #+#    #+#             */
-/*   Updated: 2026/04/17 16:33:57 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/22 11:38:53 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malcolm.h"
-
-// void	free_entry(t_entry *entry)
-// {
-// 	t_entry	*tmp;
-// 	while (entry)
-// 	{
-// 		tmp = entry->next;
-// 		free(entry);
-// 		entry = tmp;
-// 	}
-// }
 
 void	print_mac(const uint8_t mac[6])
 {
