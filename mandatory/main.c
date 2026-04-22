@@ -31,6 +31,14 @@ int main(int ac, char *av[])
 	// 1. Parse arguments (sender_ip, sender_mac, target_ip, target_mac)
 	if (parse_args(ac, av, &conf) != 0)
 		return (1);
+	
+	if (conf.verbose)
+	{
+		printf("[VERBOSE] Configuration:\n");
+		printf("[VERBOSE] - Continuous mode: %s\n", conf.continuous ? "ON" : "OFF");
+		printf("[VERBOSE] - Verbose mode: ON\n");
+	}
+	
 	// 2. Trouver interface
 	iface = get_interface_info();
 	if (!iface)

