@@ -1,4 +1,4 @@
-# 🔹 ft_malcolm
+# 🔹 ft_malcolm 💻 
 
 ## 🔹 Objectif du projet
 
@@ -14,7 +14,9 @@ Une table ARP (Address Resolution Protocol) est une table utilisée par une mach
 
 Elle permet de savoir à quelle carte réseau envoyer les paquets Ethernet.
 
-Exemple : 192.168.1.1 → aa:bb:cc:dd:ee:ff
+Exemple : IP = 192.168.1.1 → aa:bb:cc:dd:ee:ff = MAC (Media Access Control)
+
+---
 
 ## 🔹Qu’est-ce qu’une attaque MITM ?
 
@@ -39,9 +41,13 @@ Le programme :
 
 ⚠️ Le programme ne met pas en place un MITM complet (pas de forwarding de trafic), il s’arrête après l’envoi de la réponse.
 
+---
+
 ## 🔹Utilisation
 
 ./ft_malcolm [source ip] [source mac address] [target ip] [target mac adress]
+
+---
 
 ## 🔹malcolm_lab
 
@@ -52,6 +58,8 @@ Un environnement Docker permettant de simuler un réseau local sécurisé compos
 - une gateway
 
 Le tout orchestré via docker-compose.
+
+---
 
 ## 🔹Arborescence
 
@@ -85,3 +93,11 @@ Le tout orchestré via docker-compose.
 │   ├── socket.c
 │   └── utils.c
 └── README.md
+```
+
+---
+
+## 🔹 Techno
+
+- C
+- Docker 🐋
